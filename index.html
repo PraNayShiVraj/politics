@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ElectIQ — Your Smart Guide to the Election Process</title>
+  
+  <!-- Google Fonts: DM Sans for body, Playfair Display for headings -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Favicon / Meta Tags -->
+  <meta name="description" content="An interactive, friendly, and strictly non-partisan AI guide to understanding every stage of the election process.">
+</head>
+<body>
+
+  <!-- Floating Nav Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo-area" id="logo-home">
+        <!-- SVG Ballot Box Logo -->
+        <svg class="ballot-box-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="10" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/>
+          <path d="M7 6H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M9 10V6C9 4.89543 9.89543 4 11 4H13C14.1046 4 15 4.89543 15 6V10" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 13V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="12" cy="15" r="1" fill="currentColor"/>
+        </svg>
+        <span class="app-title">ElectIQ</span>
+      </div>
+      
+      <nav class="nav-links">
+        <a href="#stages-section" class="nav-item">Stages</a>
+        <a href="#" class="nav-item" id="nav-glossary">Glossary</a>
+        <a href="#" class="nav-item" id="nav-how-it-works">How It Works</a>
+        <a href="#" class="nav-item" id="nav-about">About</a>
+      </nav>
+
+      <button class="settings-btn" id="open-settings" aria-label="Developer Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-container">
+      <div class="hero-badge">NON-PARTISAN ELECTION GUIDE</div>
+      <h1 class="hero-title">Understand Every Step of the Election</h1>
+      <p class="hero-subtitle">
+        Ask anything about the election process — nominations, voting, counting, results — and get a clear, unbiased answer instantly.
+      </p>
+      
+      <!-- Prominent Search / Chat Input Panel -->
+      <div class="search-panel">
+        <form id="ask-form" class="search-form">
+          <div class="input-wrapper">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <textarea 
+              id="user-input" 
+              placeholder="Ask ElectIQ a question about elections..." 
+              rows="1" 
+              required
+            ></textarea>
+            <span class="status-indicator" id="thinking-indicator">ElectIQ is thinking...</span>
+          </div>
+          <button type="submit" class="submit-btn" id="submit-btn">
+            <span>Ask ElectIQ</span>
+            <svg class="send-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </form>
+      </div>
+      
+      <!-- Suggestion Chips -->
+      <div class="suggestion-area">
+        <span class="suggestion-label">Suggested topics:</span>
+        <div class="chips-container">
+          <button class="chip" data-question="How does voting work?">How does voting work?</button>
+          <button class="chip" data-question="What is the nomination process?">What is the nomination process?</button>
+          <button class="chip" data-question="How are votes counted?">How are votes counted?</button>
+          <button class="chip" data-question="What happens after results are declared?">What happens after results?</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive AI Chat Section (Slides up when populated) -->
+  <section class="chat-section hidden" id="chat-section">
+    <div class="chat-container">
+      <div class="chat-header">
+        <div class="chat-header-info">
+          <span class="chat-avatar-mini">🗳️</span>
+          <div>
+            <h3>Conversation with ElectIQ</h3>
+            <p>Strictly Unbiased & Non-Partisan</p>
+          </div>
+        </div>
+        <button class="clear-chat-btn" id="clear-chat-btn" title="Reset chat and return home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            <line x1="10" y1="11" x2="10" y2="17"></line>
+            <line x1="14" y1="11" x2="14" y2="17"></line>
+          </svg>
+          <span>Clear Chat</span>
+        </button>
+      </div>
+      
+      <!-- Chat Message Threads -->
+      <div class="chat-history" id="chat-history">
+        <!-- Dynmically loaded messages will reside here -->
+      </div>
+      
+      <!-- Typing Indicator -->
+      <div class="typing-indicator-wrapper hidden" id="typing-indicator">
+        <div class="ai-avatar">🗳️</div>
+        <div class="typing-card">
+          <span class="avatar-label">ElectIQ</span>
+          <div class="typing-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Visual Timeline Stage Section -->
+  <section class="stages-section" id="stages-section">
+    <div class="stages-container">
+      <div class="section-title-wrapper">
+        <span class="section-badge">ROADMAP</span>
+        <h2 class="section-title">The 6 Stages of the Election Cycle</h2>
+        <p class="section-subtitle">Elections are a highly structured journey. Click on any stage below to explore its specific rules, timelines, and terminology.</p>
+      </div>
+
+      <div class="timeline-visual">
+        <!-- Stage 1 -->
+        <div class="timeline-node active" data-stage="1">
+          <div class="node-circle">1</div>
+          <span class="node-label">Announcement</span>
+        </div>
+        <div class="timeline-line"></div>
+        
+        <!-- Stage 2 -->
+        <div class="timeline-node" data-stage="2">
+          <div class="node-circle">2</div>
+          <span class="node-label">Nominations</span>
+        </div>
+        <div class="timeline-line"></div>
+        
+        <!-- Stage 3 -->
+        <div class="timeline-node" data-stage="3">
+          <div class="node-circle">3</div>
+          <span class="node-label">Campaigning</span>
+        </div>
+        <div class="timeline-line"></div>
+        
+        <!-- Stage 4 -->
+        <div class="timeline-node" data-stage="4">
+          <div class="node-circle">4</div>
+          <span class="node-label">Voting Day</span>
+        </div>
+        <div class="timeline-line"></div>
+        
+        <!-- Stage 5 -->
+        <div class="timeline-node" data-stage="5">
+          <div class="node-circle">5</div>
+          <span class="node-label">Counting</span>
+        </div>
+        <div class="timeline-line"></div>
+        
+        <!-- Stage 6 -->
+        <div class="timeline-node" data-stage="6">
+          <div class="node-circle">6</div>
+          <span class="node-label">Results</span>
+        </div>
+      </div>
+
+      <!-- Accordion Grid -->
+      <div class="stages-accordion-container">
+        
+        <!-- Stage 1 Accordion -->
+        <div class="stage-accordion active" id="stage-acc-1">
+          <div class="accordion-header">
+            <span class="acc-num">01</span>
+            <div class="acc-title-group">
+              <h3>Announcement</h3>
+              <p>Setting the schedule & initiating ethical standards</p>
+            </div>
+            <svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="accordion-content">
+            <p>
+              The election cycle officially starts with the official **Announcement** made by the election commission or governing body. During this announcement, the specific dates for nominations, campaigning, polling day, and final counting are formally set.
+            </p>
+            <p>
+              Simultaneously, a set of guidelines known as the **Model Code of Conduct** is activated. This code is crucial because it ensures that governing parties cannot use public resources or official status to gain an unfair advantage, creating a level playing field for all political candidates.
+            </p>
+            <button class="stage-ask-btn" data-ask="Tell me more about what happens during the election Announcement and the Model Code of Conduct.">Ask ElectIQ about this Stage ↗</button>
+          </div>
+        </div>
+
+        <!-- Stage 2 Accordion -->
+        <div class="stage-accordion" id="stage-acc-2">
+          <div class="accordion-header">
+            <span class="acc-num">02</span>
+            <div class="acc-title-group">
+              <h3>Nominations</h3>
+              <p>Candidates officially filing papers & screening</p>
+            </div>
+            <svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="accordion-content">
+            <p>
+              To run for office, candidates must submit their official nomination documents. This is a strict process supervised by the **Returning Officer**, the official responsible for overseeing the election in a specific **constituency** (electoral district).
+            </p>
+            <p>
+              During **Nominations**, candidates must pay a security deposit and submit a legal **affidavit**. This affidavit discloses key details such as their personal assets, liabilities, educational background, and any pending criminal cases, promoting complete transparency for the public.
+            </p>
+            <button class="stage-ask-btn" data-ask="Can you explain the Candidate Nominations process, the Returning Officer role, and affidavits?">Ask ElectIQ about this Stage ↗</button>
+          </div>
+        </div>
+
+        <!-- Stage 3 Accordion -->
+        <div class="stage-accordion" id="stage-acc-3">
+          <div class="accordion-header">
+            <span class="acc-num">03</span>
+            <div class="acc-title-group">
+              <h3>Campaigning</h3>
+              <p>Rallies, public messaging & spending regulations</p>
+            </div>
+            <svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="accordion-content">
+            <p>
+              Once nominations are approved, candidates start **Campaigning** through public rallies, advertising, and canvassing. Strict election laws govern this stage, including hard limits on campaign spending to ensure that wealth alone doesn't dictate election outcomes.
+            </p>
+            <p>
+              This stage concludes with the **campaign silence period**—typically starting 48 hours before voting begins. During this quiet time, all active public campaigning and political broadcasting must stop to give voters peaceful, undisturbed time to make their final decision.
+            </p>
+            <button class="stage-ask-btn" data-ask="Tell me more about Campaigning rules, spending limits, and the campaign silence period.">Ask ElectIQ about this Stage ↗</button>
+          </div>
+        </div>
+
+        <!-- Stage 4 Accordion -->
+        <div class="stage-accordion" id="stage-acc-4">
+          <div class="accordion-header">
+            <span class="acc-num">04</span>
+            <div class="acc-title-group">
+              <h3>Voting Day</h3>
+              <p>Polling stations, cast casting & integrity measures</p>
+            </div>
+            <svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="accordion-content">
+            <p>
+              On **Voting Day**, eligible citizens visit their designated **polling station** to cast their vote. Voting is protected by a strict **secret ballot** system, ensuring that whom you choose remains completely private and free from intimidation.
+            </p>
+            <p>
+              At the polling booth, voters verify their identity, and officials apply a mark of **indelible ink** to their finger to prevent double voting. Votes are registered either on a physical paper **ballot** or electronically using an **EVM** (Electronic Voting Machine).
+            </p>
+            <button class="stage-ask-btn" data-ask="Walk me through Voting Day, how polling stations are set up, and what EVMs are.">Ask ElectIQ about this Stage ↗</button>
+          </div>
+        </div>
+
+        <!-- Stage 5 Accordion -->
+        <div class="stage-accordion" id="stage-acc-5">
+          <div class="accordion-header">
+            <span class="acc-num">05</span>
+            <div class="acc-title-group">
+              <h3>Counting</h3>
+              <p>Securing boxes, tallies & oversight</p>
+            </div>
+            <svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="accordion-content">
+            <p>
+              After polling closes, voting machines and ballot boxes are sealed securely and transported to heavily guarded central locations. On **Counting** day, these containers are unsealed in the presence of official election staff and independent **observers**.
+            </p>
+            <p>
+              The counting progresses in structured, round-by-round tallies. Candidates and representatives of political parties are allowed to watch the counting process in person to confirm that every vote is handled fairly and accurately.
+            </p>
+            <button class="stage-ask-btn" data-ask="How does the Counting stage work? Who guarantees that the tally is accurate?">Ask ElectIQ about this Stage ↗</button>
+          </div>
+        </div>
+
+        <!-- Stage 6 Accordion -->
+        <div class="stage-accordion" id="stage-acc-6">
+          <div class="accordion-header">
+            <span class="acc-num">06</span>
+            <div class="acc-title-group">
+              <h3>Results</h3>
+              <p>Declaring winners & initiating transitions</p>
+            </div>
+            <svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="accordion-content">
+            <p>
+              Once counting finishes, the **Returning Officer** officially certifies the **Results** and declares the winning candidate. If candidates suspect irregularities, they can file official **election petitions** in court to audit the result.
+            </p>
+            <p>
+              Following result certification, the winning candidate or coalition of parties begins the process of government formation, preparing for the transition of power and taking their legislative oath of office.
+            </p>
+            <button class="stage-ask-btn" data-ask="What happens after the Results are declared? How does government formation start?">Ask ElectIQ about this Stage ↗</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Sticky Mobile Input Bar Indicator -->
+  <div class="mobile-chat-anchor-indicator" id="mobile-chat-anchor">
+    <span>Chat in Progress</span>
+    <button id="jump-to-chat">Jump to Chat ↓</button>
+  </div>
+
+  <!-- Educational/Glossary Drawers & Modals -->
+  <!-- Modal Backdrop -->
+  <div class="modal-overlay hidden" id="modal-overlay"></div>
+
+  <!-- Drawer: Glossary -->
+  <div class="drawer hidden" id="drawer-glossary">
+    <div class="drawer-header">
+      <h2>Election Glossary</h2>
+      <button class="close-drawer-btn" id="close-glossary">&times;</button>
+    </div>
+    <div class="drawer-content">
+      <p class="drawer-intro">Here are definitions of key election terms you will encounter as you learn about the democratic process.</p>
+      
+      <div class="glossary-list">
+        <div class="glossary-item">
+          <dfn>Model Code of Conduct</dfn>
+          <dd>A set of guidelines issued by the election commission that political parties and candidates must follow during an election, especially regarding campaigning, speeches, and behavior. It takes effect as soon as the election dates are announced.</dd>
+        </div>
+        <div class="glossary-item">
+          <dfn>Returning Officer</dfn>
+          <dd>The government-appointed official responsible for overseeing and conducting the entire election process within a specific constituency. They approve nominations and certify the final winners.</dd>
+        </div>
+        <div class="glossary-item">
+          <dfn>Constituency</dfn>
+          <dd>A defined geographical area represented by an elected official. Voters residing within this boundary cast ballots to choose a single representative for their district.</dd>
+        </div>
+        <div class="glossary-item">
+          <dfn>EVM (Electronic Voting Machine)</dfn>
+          <dd>An electronic device used to record and count votes securely. It is designed to be tamper-proof and speeds up the counting process compared to traditional paper ballots.</dd>
+        </div>
+        <div class="glossary-item">
+          <dfn>Secret Ballot</dfn>
+          <dd>A voting method in which a voter's choices are completely confidential. It prevents coercion, intimidation, and bribery by ensuring that no one else knows who the citizen voted for.</dd>
+        </div>
+        <div class="glossary-item">
+          <dfn>Ballot Paper</dfn>
+          <dd>A sheet of paper containing the names of the candidates and their political party symbols. Voters mark their preferred choice in private and drop it in a sealed box.</dd>
+        </div>
+        <div class="glossary-item">
+          <dfn>Indelible Ink</dfn>
+          <dd>A semi-permanent purple ink applied to a voter's finger at the polling booth. It contains silver nitrate, which stains the skin and remains visible for weeks, ensuring individuals cannot vote multiple times.</dd>
+        </div>
+        <div class="glossary-item">
+          <dfn>Election Petition</dfn>
+          <dd>A formal legal challenge filed in court questioning the validity of an election result. It is typically launched if a candidate suspects massive irregularities or voting fraud.</dd>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Drawer: How It Works -->
+  <div class="drawer hidden" id="drawer-how-it-works">
+    <div class="drawer-header">
+      <h2>How It Works</h2>
+      <button class="close-drawer-btn" id="close-how-it-works">&times;</button>
+    </div>
+    <div class="drawer-content">
+      <h3>Getting Started with ElectIQ</h3>
+      <p>ElectIQ is designed to be an accessible educational guide for citizens, students, and first-time voters. Here is how you can use the assistant to learn about elections:</p>
+      
+      <ol class="how-list">
+        <li>
+          <strong>Ask a Custom Question:</strong> Type any election-related question in the search bar in the hero section and click "Ask ElectIQ". The AI will generate a tailored, neutral, and clear response.
+        </li>
+        <li>
+          <strong>Explore Suggested Topics:</strong> Click on any of the suggestion chips directly beneath the input box for immediate explanations of core election processes.
+        </li>
+        <li>
+          <strong>Use the Stage Timeline:</strong> Scroll down to view our gorgeous interactive timeline. Click any of the 6 stages (Announcement, Nominations, Campaigning, Voting, Counting, Results) to open our structured visual accordion. Use the special "Ask ElectIQ about this Stage" button inside to start a deep-dive conversation!
+        </li>
+        <li>
+          <strong>Check the Glossary:</strong> Click the Glossary link in the navigation or footer at any point to pull up clear, simple definitions of technical terms.
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Drawer: About -->
+  <div class="drawer hidden" id="drawer-about">
+    <div class="drawer-header">
+      <h2>About ElectIQ</h2>
+      <button class="close-drawer-btn" id="close-about">&times;</button>
+    </div>
+    <div class="drawer-content">
+      <h3>Strictly Non-Partisan Education</h3>
+      <p>
+        ElectIQ is a specialized conversational tool created to teach the public how democratic elections are conducted. Our guiding mission is to strengthen democracy by making election rules, timelines, and rights easy for everyone to understand.
+      </p>
+      
+      <blockquote class="non-partisan-pledge">
+        <strong>Our Non-Partisan Pledge:</strong> ElectIQ never endorses, favors, or criticizes any political party, candidate, or ideology. We express zero personal opinions on policy outcomes. If asked a politically loaded or partisan question, we will guide you back to the facts of the electoral process itself.
+      </blockquote>
+      
+      <h3>Real-World Examples</h3>
+      <p>
+        ElectIQ provides global context. It can explain and compare different democratic systems, such as:
+      </p>
+      <ul>
+        <li><strong>India:</strong> The largest democratic exercise in the world, managed by the independent Election Commission of India (ECI) using Electronic Voting Machines (EVMs).</li>
+        <li><strong>United States:</strong> A decentralized system where state laws govern voting, relying on the Electoral College for Presidential elections, primaries, and mail-in ballots.</li>
+        <li><strong>United Kingdom:</strong> A parliamentary democracy governed by a First-Past-The-Post voting system where the monarch invites the winning party leader to form a government.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Modal: Fallback Settings (API Key Input) -->
+  <div class="modal hidden" id="modal-settings">
+    <div class="modal-header">
+      <h3>API Settings & Fallback Key</h3>
+      <button class="close-modal-btn" id="close-settings">&times;</button>
+    </div>
+    <div class="modal-content">
+      <p>
+        By default, ElectIQ tries to communicate with a local backend server on <code>/api/chat</code> to protect secrets.
+      </p>
+      <p>
+        If you are running this page directly in a browser without a backend proxy server, you can supply your own <strong>Mistral API Key</strong> here. It is stored <strong>only in your local browser's storage</strong> and will be sent directly to Mistral's API via CORS.
+      </p>
+      
+      <div class="settings-form-group">
+        <label for="api-key-input">Mistral API Key (from console.mistral.ai) :</label>
+        <input type="password" id="api-key-input" placeholder="Paste your Mistral API key here">
+      </div>
+      
+      <div class="settings-actions">
+        <button class="save-settings-btn" id="save-settings">Save API Key</button>
+        <button class="clear-settings-btn" id="clear-settings">Clear Key</button>
+      </div>
+      
+      <span class="settings-status-msg" id="settings-status"></span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <svg class="ballot-box-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="10" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/>
+          <path d="M7 6H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M9 10V6C9 4.89543 9.89543 4 11 4H13C14.1046 4 15 4.89543 15 6V10" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 13V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="12" cy="15" r="1" fill="currentColor"/>
+        </svg>
+        <span class="footer-title">ElectIQ</span>
+      </div>
+      
+      <div class="footer-links">
+        <a href="#stages-section" class="footer-link">Stages Roadmap</a>
+        <a href="#" class="footer-link" id="footer-glossary">Glossary</a>
+        <a href="#" class="footer-link" id="footer-how-it-works">How It Works</a>
+        <a href="#" class="footer-link" id="footer-about">About Us</a>
+      </div>
+      
+      <p class="footer-tagline">
+        ElectIQ &middot; Powered by Mistral AI &middot; For educational purposes only &middot; Strictly non-partisan
+      </p>
+    </div>
+  </footer>
+
+  <!-- Frontend Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
