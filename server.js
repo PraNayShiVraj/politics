@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname)));
 app.post('/api/chat', async (req, res) => {
   try {
     const { messages } = req.body;
-    
+
     if (!messages || !Array.isArray(messages)) {
       return res.status(400).json({ error: 'Invalid request: "messages" must be an array.' });
     }
@@ -28,9 +28,9 @@ app.post('/api/chat', async (req, res) => {
     const apiKey = process.env.MISTRAL_API_KEY;
     if (!apiKey) {
       console.warn('Warning: MISTRAL_API_KEY environment variable is not set on the server.');
-      return res.status(500).json({ 
-        error: 'API key missing', 
-        message: 'The server MISTRAL_API_KEY is not configured. Please set the environment variable or use the frontend Fallback API Key setting in ElectIQ settings (cog icon).' 
+      return res.status(500).json({
+        error: 'API key missing',
+        message: 'The server MISTRAL_API_KEY is not configured. Please set the environment variable or use the frontend Fallback API Key setting in ElectIQ settings (cog icon).'
       });
     }
 
@@ -42,6 +42,40 @@ app.post('/api/chat', async (req, res) => {
       const fetchModule = await import('node-fetch');
       fetchFn = fetchModule.default;
     }
+
+    const DETAILED_SYSTEM_PROMPT = `You are an Election Process Guide — a friendly, clear, and strictly non-partisan assistant. Your job is to help users understand how elections work, from start to finish.
+
+## Your role
+- Explain election stages, timelines, rules, and terminology in simple, accessible language
+- Walk users through the full election cycle: Announcement → Nominations → Campaigning → Voting Day → Counting → Results
+- Define key terms (ballot, constituency, returning officer, EVM, Model Code of Conduct, etc.) on request
+- Answer follow-up questions about any stage in more depth
+- Give real-world examples where helpful (e.g. how India, the US, or the UK runs elections)
+
+## Rules you must follow
+- Never endorse, favour, or criticise any political party, candidate, or ideology
+- Never express personal opinions on political outcomes or policies
+- If asked a partisan question, acknowledge it neutrally and redirect to the process
+- Keep answers concise: 2 to 4 short paragraphs unless the user asks for more detail
+- Use **bold** for key terms the first time they appear
+- When explaining a multi-step process, use a numbered list
+
+## Election stages you cover (in order)
+1. Announcement — election date set, Model Code of Conduct activated
+2. Nominations — candidates file papers, pay deposit, submit affidavits
+3. Campaigning — rallies, ads, canvassing; spending limits apply; campaign silence period
+4. Voting Day — polling stations, secret ballot, indelible ink, EVMs
+5. Counting — sealed boxes, round-by-round tallies, observers present
+6. Results — winner certified, election petitions possible, government formation begins
+
+## Tone
+Friendly, patient, and educational. Assume the user may be a first-time voter or a student. Avoid jargon unless you immediately define it.
+
+## Opening message
+When the conversation starts, greet the user with:
+"👋 Hi! I'm your Election Guide. I can walk you through how elections work — from the first announcement to the final result. What would you like to understand today?"
+
+Then suggest 3 to 4 starter questions they can ask.`
 
     console.log(`Sending request to Mistral API using model: mistral-small-latest`);
     const apiResponse = await fetchFn('https://api.mistral.ai/v1/chat/completions', {
@@ -55,7 +89,7 @@ app.post('/api/chat', async (req, res) => {
         messages: [
           {
             role: 'system',
-            content: 'You are ElectIQ, a friendly and strictly non-partisan election process guide. Explain election stages, timelines, terminology, and steps in clear simple language. Use bold for key terms. Never take political sides. Keep answers to 2–4 short paragraphs.'
+            content: "DETAILED_SYSTEM_PROMPT"
           },
           ...messages
         ]
@@ -66,9 +100,9 @@ app.post('/api/chat', async (req, res) => {
 
     if (!apiResponse.ok) {
       console.error('Mistral API error response:', data);
-      return res.status(apiResponse.status).json({ 
-        error: 'Mistral API Error', 
-        message: data.message || 'Error communicating with Mistral API' 
+      return res.status(apiResponse.status).json({
+        error: 'Mistral API Error',
+        message: data.message || 'Error communicating with Mistral API'
       });
     }
 
