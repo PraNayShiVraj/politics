@@ -466,12 +466,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- API SERVICE ---
   
   async function fetchMistralResponse(history) {
-    // 1. Attempt Server Proxy Call (POST /api/chat)
+    // 1. Attempt Server Proxy Call
     try {
-      const isCustomDevServer = window.location.port && window.location.port !== '3000';
-      const endpoint = (window.location.protocol === 'file:' || isCustomDevServer)
-        ? 'http://localhost:3000/api/chat'
-        : '/api/chat';
+      const isDirectServer = window.location.port === '3000' || window.location.hostname.includes('onrender.com');
+      const endpoint = isDirectServer
+        ? '/api/chat'
+        : 'https://politics-quw3.onrender.com/api/chat';
 
       const response = await fetch(endpoint, {
         method: 'POST',
